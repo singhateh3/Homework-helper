@@ -22,36 +22,39 @@ class AnswerController extends Controller
         ]);
     }
 
-    public function getAnswers($id){
-        $question = Question::with('answers.user')->find($id);
+   public function getAnswers($id){
+    $answers = Answer::where('question_id', $id)
+        ->with('user')  // Load the user relationship
+        ->get();
 
-        if(!$question){
-            return response()->json([
-                'success' => false,
-                'message'=> 'Question not found',
-            ],404);
-        }
-
-        $answers = $question->answers;
-
+    if($answers->isEmpty()){
         return response()->json([
-            'success'=>true,
-            'message' => 'Answers retrieved successfully',
-            'answers' => $answers
-        ]);
+            'success' => false,
+            'message'=> 'No answers found for this question',
+        ],404);
     }
 
-    public function store(StoreAnswerRequest $request){
-        $validated = $request->validated();
-        $validated['user_id'] = Auth::id();
+    return response()->json([
+        'success'=>true,
+        'message' => 'Answers retrieved successfully',
+        'data' => AnswerResource::collection($answers)
+    ]);
+}
 
-        $answer = Answer::create($validated);
+    public function store(StoreAnswerRequest $request)
+    {
+    $validated = $request->validated();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Answer stored successfully',
-            'data' => new AnswerResource($answer)
-        ],201);
+    $validated['user_id'] = Auth::id();
+    // $validated['question_id'] = $question->id;
+
+    $answer = Answer::create($validated);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Answer stored successfully',
+        'data' => new AnswerResource($answer)
+    ], 201);
     }
 
 

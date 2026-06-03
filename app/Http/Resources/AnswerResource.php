@@ -16,12 +16,13 @@ class AnswerResource extends JsonResource
     {
         return [
 
-            'id'=>$this->id,
-            'Question'=>$this->question,
-            'user_id'=>$this->user_id,
-            'body'=>$this->body,
-            'created_at'=>$this->created_at,
-            'updated_at'=>$this->updated_at
+           'id' => $this->id,
+            'question_id' => $this->question_id,
+            'user_id' => $this->user_id,
+            'body' => $this->body,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'user' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }

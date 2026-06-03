@@ -12,14 +12,18 @@ use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
-    public function index(){
-        $question = Question::latest()->paginate(15);
-        return response()->json([
-            'success'=>true,
-            'message'=> "Questions retrieved successfully",
-            'data' => new QuestionResourceCollection($question)
-        ]);
-    }
+    public function index()
+{
+    $questions = Question::latest()->paginate(15);
+
+    return response()->json([
+        'success' => true,
+        'message' => "Questions retrieved successfully",
+        'data' => QuestionResource::collection($questions->items()),
+        'current_page' => $questions->currentPage(),
+        'last_page' => $questions->lastPage(),
+    ]);
+}
 
     public function store(StoreQuestionRequest $request){
         $validated = $request->validated();
@@ -37,7 +41,7 @@ class QuestionController extends Controller
             'success'=> true,
             'message' => 'Question retrieved successfully',
             'data'=> new QuestionResource($question)
-        ]);
+        ], 200);
     }
 
     public function update(UpdateQuestionRequest $request, Question $question){
@@ -50,7 +54,7 @@ class QuestionController extends Controller
             'success'=>true,
             'message'=> 'Question Updated Successfully',
             'data' => new QuestionResource($question)
-        ], 201);
+        ], 200);
     }
 
     public function destroy(Question $question){
