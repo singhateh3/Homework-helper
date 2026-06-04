@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/stats', [StatsController::class, 'index']);
+
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -18,6 +20,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/answers', AnswerController::class);
     Route::get('/questions/{id}/answers', [AnswerController::class, 'getAnswers']);
     Route::get('/top-questions', [DashboardController::class, 'index']);
-    Route::get('/stats', [StatsController::class, 'index']);
 
 });
