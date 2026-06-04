@@ -1,14 +1,16 @@
 <?php
 
 return [
-    'paths' => ['api/*', 'sanctum/csrf-cookie', '*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'register', 'logout', '*'],
 
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://your-vercel-app.vercel.app',  // Your Vercel frontend URL
-        'http://localhost:3000',                // Local React/Vue dev
-        'http://localhost:5173',                // Local Vite dev
+        'https://homework-helper-frontend-cflg5ai39-singhateh3s-projects.vercel.app',
+        'https://*.vercel.app',  // Allow all Vercel preview deployments
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'http://localhost:8000',
     ],
 
     'allowed_origins_patterns' => [],
