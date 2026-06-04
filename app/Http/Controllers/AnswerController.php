@@ -7,8 +7,6 @@ use App\Http\Requests\UpdateAnswerRequest;
 use App\Http\Resources\AnswerResource;
 use App\Http\Resources\AnswerResourceCollection;
 use App\Models\Answer;
-use App\Models\Question;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AnswerController extends Controller
