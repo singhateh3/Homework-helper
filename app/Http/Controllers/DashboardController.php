@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $questions = Question::latest()->paginate(5);
+        $questions = Question::latest()->paginate(5)->with('user')->get();
 
         return response()->json([
             'success' => true,

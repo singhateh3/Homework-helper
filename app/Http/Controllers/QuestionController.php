@@ -14,7 +14,7 @@ class QuestionController extends Controller
 {
     public function index()
 {
-    $questions = Question::latest()->paginate(15);
+    $questions = Question::latest()->paginate(15)->with('user')->get();
 
     return response()->json([
         'success' => true,
@@ -35,6 +35,7 @@ class QuestionController extends Controller
            'data' => new QuestionResource($question)
         ], 201);
     }
+
 
     public function show(Question $question){
         return response()->json([
