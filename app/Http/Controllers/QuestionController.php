@@ -14,7 +14,7 @@ class QuestionController extends Controller
 {
     public function index()
 {
-    $questions = Question::latest()->paginate(15)->with('user')->get();
+    $questions = Question::with('user')->latest()->paginate(15);
 
     return response()->json([
         'success' => true,

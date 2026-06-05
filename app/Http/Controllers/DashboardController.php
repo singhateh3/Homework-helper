@@ -8,14 +8,16 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
-    {
-        $questions = Question::latest()->paginate(5)->with('user')->get();
+   public function index()
+{
+    $questions = Question::with('user')  // First, eager load the relationship
+        ->latest()
+        ->paginate(5);
 
-        return response()->json([
-            'success' => true,
-            'message' => "Questions retrieved successfully",
-            'data' => QuestionResource::collection($questions),
-        ]);
-    }
+    return response()->json([
+        'success' => true,
+        'message' => "Questions retrieved successfully",
+        'data' => QuestionResource::collection($questions),
+    ]);
+}
 }
