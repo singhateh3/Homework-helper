@@ -40,7 +40,7 @@ class QuestionController extends Controller
         return response()->json([
             'success'=> true,
             'message' => 'Question retrieved successfully',
-            'data'=> new QuestionResource($question)
+            'data'=> new QuestionResource($question->with('user'))
         ], 200);
     }
 
