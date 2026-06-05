@@ -37,11 +37,14 @@ class QuestionController extends Controller
     }
 
 
-    public function show(Question $question){
+   public function show(Question $question)
+    {
+        $question->load('user');  // Load the user relationship
+
         return response()->json([
-            'success'=> true,
+            'success' => true,
             'message' => 'Question retrieved successfully',
-            'data'=> new QuestionResource($question->with('user'))
+            'data' => new QuestionResource($question)
         ], 200);
     }
 
