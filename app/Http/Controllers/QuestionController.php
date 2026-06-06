@@ -14,7 +14,17 @@ class QuestionController extends Controller
 {
     public function index()
 {
-    $questions = Question::with('user')->latest()->paginate(15);
+    $questions = Question::with('user')
+        ->withCount('answers')
+        ->latest()
+        ->paginate(15);
+
+    // Add user vote for each question if authenticated
+    if (auth()->check()) {
+        foreach ($questions as $question) {
+            $question->user_vote = $question->userVote();
+        }
+    }
 
     return response()->json([
         'success' => true,
@@ -22,6 +32,8 @@ class QuestionController extends Controller
         'data' => QuestionResource::collection($questions->items()),
         'current_page' => $questions->currentPage(),
         'last_page' => $questions->lastPage(),
+        'per_page' => $questions->perPage(),
+        'total' => $questions->total(),
     ]);
 }
 
