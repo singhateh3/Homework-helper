@@ -23,6 +23,8 @@ class AnswerResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
+            'votes_count' => $this->votes_count ?? 0,
+            'user_vote' => $this->when(auth()->check(), $this->userVote()),
         ];
     }
 }

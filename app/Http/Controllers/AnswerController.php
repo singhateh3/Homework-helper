@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateAnswerRequest;
 use App\Http\Resources\AnswerResource;
 use App\Http\Resources\AnswerResourceCollection;
 use App\Models\Answer;
+use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
 
 class AnswerController extends Controller
@@ -20,22 +21,27 @@ class AnswerController extends Controller
         ]);
     }
 
-   public function getAnswers($id){
-    $answers = Answer::where('question_id', $id)
-        ->with('user')  // Load the user relationship
-        ->get();
+   public function getAnswers($questionId)
+{
+    $question = Question::findOrFail($questionId);
+    $answers = $question->answers()->with('user')->get();
 
-    if($answers->isEmpty()){
-        return response()->json([
-            'success' => false,
-            'message'=> 'No answers found for this question',
-        ],404);
+    // Add user vote information for each answer
+    foreach ($answers as $answer) {
+        // Get vote count
+        $answer->votes_count = $answer->votes()->sum('type');
+
+        // Get current user's vote
+        if (auth()->check()) {
+            $answer->user_vote = $answer->userVote();
+        } else {
+            $answer->user_vote = null;
+        }
     }
 
     return response()->json([
-        'success'=>true,
-        'message' => 'Answers retrieved successfully',
-        'data' => AnswerResource::collection($answers)
+        'success' => true,
+        'data' => $answers
     ]);
 }
 

@@ -10,13 +10,21 @@ class DashboardController extends Controller
 {
    public function index()
 {
-    $questions = Question::with('user')  // First, eager load the relationship
+     $questions = Question::with('user')
+        ->withCount('answers')
         ->latest()
-        ->paginate(5);
+        ->limit(5)
+        ->get();
+
+    // Add user vote for each question if authenticated
+    if (auth()->check()) {
+        foreach ($questions as $question) {
+            $question->user_vote = $question->userVote();
+        }
+    }
 
     return response()->json([
         'success' => true,
-        'message' => "Questions retrieved successfully",
         'data' => QuestionResource::collection($questions),
     ]);
 }

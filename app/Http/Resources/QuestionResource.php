@@ -7,20 +7,20 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class QuestionResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
-            'title'=>$this->title,
-            'body'=>$this->body,
-            'created_at'=>$this->created_at,
-            'updated_at'=>$this->updated_at,
+            'id' => $this->id,
+            'title' => $this->title,
+            'body' => $this->body,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),
+            'votes_count' => $this->votes_count ?? $this->votes()->sum('type'),
+            'user_vote' => $this->when(auth()->check(), function() {
+                return $this->userVote();
+            }),
+            'answers_count' => $this->answers()->count(),
         ];
     }
 }
