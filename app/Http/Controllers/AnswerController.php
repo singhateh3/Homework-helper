@@ -9,6 +9,7 @@ use App\Http\Resources\AnswerResourceCollection;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Mcp\Request;
 
 class AnswerController extends Controller
 {
