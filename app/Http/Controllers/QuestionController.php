@@ -9,6 +9,7 @@ use App\Http\Resources\QuestionResourceCollection;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class QuestionController extends Controller
 {
@@ -61,6 +62,7 @@ class QuestionController extends Controller
     }
 
     public function update(UpdateQuestionRequest $request, Question $question){
+        Gate::authorize('update-question', $question);
         $validated = $request->validated();
         $validated['user_id'] = Auth::id();
 
@@ -74,6 +76,7 @@ class QuestionController extends Controller
     }
 
     public function destroy(Question $question){
+        Gate::authorize('delete-question', $question);
         $question->delete();
         return response()->json([
             'success' => true,
