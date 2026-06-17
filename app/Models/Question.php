@@ -116,4 +116,20 @@ public function removeVote($userId = null)
 
     return 'not_found';
 }
+
+// accept answer
+public function acceptedAnswer()
+    {
+        return $this->hasOne(Answer::class)->where('is_accepted', true);
+    }
+
+    public function hasAcceptedAnswer()
+    {
+        return $this->answers()->where('is_accepted', true)->exists();
+    }
+
+    public function isOwner($userId)
+    {
+        return $this->user_id === $userId;
+    }
 }

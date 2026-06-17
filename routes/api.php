@@ -31,5 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Answer vote (handles upvote, downvote, and remove)
     Route::post('/answers/{answer}/vote', [VoteController::class, 'voteAnswer']);
 
+    // Accept or unaccept
+    Route::patch('/answers/{answer}/accept', [AnswerController::class, 'accept'])->name('answers.accept');
+    Route::patch('/answers/{answer}/unaccept', [AnswerController::class, 'unaccept'])->name('answers.unaccept');
 
 });

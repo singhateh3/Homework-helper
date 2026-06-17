@@ -21,6 +21,10 @@ class QuestionResource extends JsonResource
             'user_vote' => $this->when(auth()->check(), function() {
                 return $this->userVote();
             }),
+            'has_accepted_answer' => $this->hasAcceptedAnswer(),
+            'accepted_answer' => $this->when($this->hasAcceptedAnswer(), function() {
+                return new AnswerResource($this->acceptedAnswer);
+            }),
             'answers_count' => $this->answers()->count(),
         ];
     }

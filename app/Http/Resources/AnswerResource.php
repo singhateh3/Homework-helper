@@ -20,6 +20,7 @@ class AnswerResource extends JsonResource
             'question_id' => $this->question_id,
             'user_id' => $this->user_id,
             'body' => $this->body,
+            'is_accepted' => (bool) $this->is_accepted,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'user' => new UserResource($this->whenLoaded('user')),

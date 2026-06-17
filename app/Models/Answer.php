@@ -118,5 +118,28 @@ public function removeVote($userId = null)
     return 'not_found';
 }
 
+// Accept answer
+public function isAccepted()
+    {
+        return $this->is_accepted;
+    }
+
+    public function accept()
+    {
+        // Remove accepted status from all other answers for this question
+        $this->question->answers()->where('id', '!=', $this->id)->update(['is_accepted' => false]);
+
+        // Accept this answer
+        $this->update(['is_accepted' => true]);
+
+        return $this;
+    }
+
+    public function unaccept()
+    {
+        $this->update(['is_accepted' => false]);
+        return $this;
+    }
+
 
 }
