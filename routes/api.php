@@ -18,6 +18,9 @@ Route::get('/stats', [StatsController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    // search questions
+    Route::get('/questions/search', [QuestionController::class, 'search']);
+
     Route::apiResource('/questions', QuestionController::class);
     Route::apiResource('/answers', AnswerController::class);
     Route::get('/questions/{id}/answers', [AnswerController::class, 'getAnswers']);
@@ -27,5 +30,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Answer vote (handles upvote, downvote, and remove)
     Route::post('/answers/{answer}/vote', [VoteController::class, 'voteAnswer']);
+
 
 });
